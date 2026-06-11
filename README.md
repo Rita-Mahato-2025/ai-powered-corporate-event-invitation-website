@@ -4,7 +4,7 @@ An AI-assisted corporate event invitation web application built using KiloCode w
 
 Live Demo : [Click Here](https://ai-powered-corporate-event-invitati-beige.vercel.app/)
 
-Demo Video : [Click Here](https://youtu.be/5_2dBgt5Fe4)
+Demo Video : [Click Here](https://youtu.be/8AUCmthnQMU)
 
 ### 🧩 Domain: Corporate Event Management / Event Invitation Platform
 
