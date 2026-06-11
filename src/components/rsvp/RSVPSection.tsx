@@ -21,15 +21,6 @@ const ENTRY_IDS = {
   dietary: "entry.1308839523",
 };
 
-const DIETARY_OPTIONS = [
-  "Vegetarian",
-  "Non-Vegetarian",
-  "Vegan",
-  "Jain",
-  "No Preference",
-  "Other",
-];
-
 export default function RSVPSection() {
   const { companyName } = useCompany();
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
@@ -40,12 +31,16 @@ export default function RSVPSection() {
     dietary: "Vegetarian",
   });
 
+  const update = (key: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [key]: value }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("submitting");
 
     const params = new URLSearchParams();
-    params.append(ENTRY_IDS.name, formData.name);
+    params.append(ENTRY_IDS.name, formData.name.trim());
     params.append(ENTRY_IDS.rsvp, formData.rsvp);
     params.append(ENTRY_IDS.guests, formData.guests);
     params.append(ENTRY_IDS.dietary, formData.dietary);
@@ -135,26 +130,34 @@ export default function RSVPSection() {
                   type="text"
                   required
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  onChange={(e) => update("name", e.target.value)}
                   className="luxury-input-base"
                   placeholder="Your name"
                 />
               </div>
 
               <div>
-                <label htmlFor="rsvp-choice" className="block text-[10px] uppercase tracking-[0.35em] text-[#E8D7A5] mb-2">
-                  Will you be attending? <span className="text-[#D4AF37]">*</span>
-                </label>
-                <select
-                  id="rsvp-choice"
-                  value={formData.rsvp}
-                  onChange={(e) => setFormData({ ...formData, rsvp: e.target.value })}
-                  className="luxury-input-base bg-white appearance-none cursor-pointer"
-                  required
-                >
-                  <option value="Yes">I will be joining you</option>
-                  <option value="No">I won't be able to attend</option>
-                </select>
+                <span className="block text-[10px] uppercase tracking-[0.35em] text-[#E8D7A5] mb-2">
+                  Will you be joining us? <span className="text-[#D4AF37]">*</span>
+                </span>
+                <div className="mt-2 space-y-2">
+                  {["Yes", "No"].map((option) => (
+                    <label key={option} className="flex items-center gap-3 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="rsvp"
+                        value={option}
+                        checked={formData.rsvp === option}
+                        onChange={(e) => update("rsvp", e.target.value)}
+                        className="h-4 w-4 accent-[#D4AF37]"
+                        required
+                      />
+                      <span className="text-sm text-white">
+                        {option === "Yes" ? "I will be joining you" : "I won't be joining you"}
+                      </span>
+                    </label>
+                  ))}
+                </div>
               </div>
 
               <div>
@@ -164,48 +167,36 @@ export default function RSVPSection() {
                 <select
                   id="rsvp-guests"
                   value={formData.guests}
-                  onChange={(e) => setFormData({ ...formData, guests: e.target.value })}
+                  onChange={(e) => update("guests", e.target.value)}
                   className="luxury-input-base bg-white appearance-none cursor-pointer"
                 >
                   <option value="1">1 Guest</option>
                   <option value="2">2 Guests</option>
                   <option value="3">3 Guests</option>
                   <option value="4">4 Guests</option>
-                  <option value="5">5 Guests</option>
                 </select>
               </div>
 
               <div>
-                <label htmlFor="rsvp-dietary" className="block text-[10px] uppercase tracking-[0.35em] text-[#E8D7A5] mb-2">
-                  Dietary Preference
-                </label>
-                <select
-                  id="rsvp-dietary"
-                  value={formData.dietary}
-                  onChange={(e) => setFormData({ ...formData, dietary: e.target.value })}
-                  className="luxury-input-base bg-white appearance-none cursor-pointer"
-                >
-                  <option value="Vegetarian">Vegetarian</option>
-                  <option value="Non-Vegetarian">Non-Vegetarian</option>
-                  <option value="Vegan">Vegan</option>
-                  <option value="Jain">Jain</option>
-                  <option value="No Preference">No Preference</option>
-                  <option value="Other">Other</option>
-                </select>
-              </div>
-
-              <div>
-                <label htmlFor="rsvp-message" className="block text-[10px] uppercase tracking-[0.35em] text-[#E8D7A5] mb-2">
-                  Optional Message
-                </label>
-                <textarea
-                  id="rsvp-message"
-                  rows={4}
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="luxury-input-base resize-none"
-                  placeholder="A message for the hosts..."
-                />
+                <span className="block text-[10px] uppercase tracking-[0.35em] text-[#E8D7A5] mb-2">
+                  Dietary Preference <span className="text-[#D4AF37]">*</span>
+                </span>
+                <div className="mt-2 space-y-2">
+                  {["Vegetarian", "Non-veg", "Vegan"].map((option) => (
+                    <label key={option} className="flex items-center gap-3 cursor-pointer">
+                      <input
+                        type="radio"
+                        name="dietary"
+                        value={option}
+                        checked={formData.dietary === option}
+                        onChange={(e) => update("dietary", e.target.value)}
+                        className="h-4 w-4 accent-[#D4AF37]"
+                        required
+                      />
+                      <span className="text-sm text-white">{option}</span>
+                    </label>
+                  ))}
+                </div>
               </div>
 
               <div className="pt-4 text-center">

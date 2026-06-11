@@ -166,13 +166,13 @@ Through this project, I improved my understanding of:
 
 # Screenshots
 
-## Homepage
-
-![Homepage](public/images/home-page.png)
-
 ## Popup Design
 
 ![Event-Pop-Up](public/images/event-pop-up.png)
+
+## Homepage
+
+![Homepage](public/images/home-page.png)
 
 ## Registration Form
 
